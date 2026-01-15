@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5 智慧溫標換算器</title>
+    <!-- 引入 Google 字體提升質感 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-bg: #ffffff;
+            --text-main: #2d3748;
+            --text-muted: #718096;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--text-main);
+        }
+
+        /* 玻璃擬態卡片容器 */
+        .converter-container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 600px;
+            border-radius: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+            padding: 2rem;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 1.75rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* 網格佈局 */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .input-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--text-main);
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #edf2f7;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .unit-badge {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-weight: bold;
+            pointer-events: none;
+        }
+
+        /* 自訂區塊樣式 */
+        .custom-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f7fafc;
+            border: 2px solid #ebf4ff;
+            border-radius: 15px;
+        }
+
+        .custom-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+
+        .custom-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .reset-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 2rem;
+            background: #edf2f7;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .reset-btn:hover {
+            background: #e2e8f0;
+        }
+
+        footer {
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            background: #fffaf0;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        /* 響應式調整 */
+        @media (max-width: 480px) {
+            .converter-container { padding: 1.5rem; }
+            .custom-controls { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<main class="converter-container">
+    <header>
+        <h1>溫度單位轉換</h1>
+        <p>輸入任一數值即可同步換算</p>
+    </header>
+
+    <div class="grid-layout">
+        <!-- 攝氏 -->
+        <section class="input-wrapper">
+            <label for="celsius">攝氏 Celsius</label>
+            <div class="input-group">
+                <input type="number" id="celsius" placeholder="0" step="any">
+                <span class="unit-badge">°C</span>
+            </div>
+        </section>
+
+        <!-- 華氏 -->
+        <section class="input-wrapper">
+            <label for="fahrenheit">華氏 Fahrenheit</label>
+            <div class="input-group">
+                <input type="number" id="fahrenheit" placeholder="32" step="any">
+                <span class="unit-badge">°F</span>
+            </div>
+        </section>
+
+        <!-- 克氏 -->
+        <section class="input-wrapper">
+            <label for="kelvin">克氏 Kelvin</label>
+            <div class="input-group">
+                <input type="number" id="kelvin" placeholder="273.15" step="any">
+                <span class="unit-badge">K</span>
+            </div>
+        </section>
+
+        <!-- 蘭金 -->
+        <section class="input-wrapper">
+            <label for="rankine">蘭金 Rankine</label>
+            <div class="input-group">
+                <input type="number" id="rankine" placeholder="491.67" step="any">
+                <span class="unit-badge">°Ra</span>
+            </div>
+        </section>
+    </div>
+
+    <!-- 自訂溫標區塊 -->
+    <article class="custom-section">
+        <div class="custom-title">
+            <label>✨ 自訂溫標設定</label>
+            <input type="text" id="customName" value="自訂溫標" style="width: auto; padding: 4px 8px; font-size: 0.8rem;">
+        </div>
+
+        <div class="custom-controls">
+            <div class="input-wrapper">
+                <label style="font-size: 0.7rem;">水的冰點 (對比 0°C)</label>
+                <input type="number" id="customBase" value="0">
+            </div>
+            <div class="input-wrapper">
+                <label style="font-size: 0.7rem;">縮放比例 (對比 1°C)</label>
+                <input type="number" id="customScale" value="1">
+            </div>
+        </div>
+
+        <div class="input-wrapper">
+            <label id="labelCustom">自訂溫標數值</label>
+            <div class="input-group">
+                <input type="number" id="customValue" placeholder="自訂值" step="any" style="border-color: #bee3f8;">
+            </div>
+        </div>
+    </article>
+
+    <button class="reset-btn" id="btnReset">清空所有數值</button>
+
+    <footer>
+        <strong>科學小常識：</strong>
+        <p>• 絕對零度是理論上最低的溫度：-273.15 °C。</p>
+        <p>• 自訂溫標公式：[自訂] = (攝氏 × 比例) + 冰點。</p>
+    </footer>
+</main>
+
+<script>
+    // 獲取所有 DOM 元素
+    const dom = {
+        c: document.getElementById('celsius'),
+        f: document.getElementById('fahrenheit'),
+        k: document.getElementById('kelvin'),
+        r: document.getElementById('rankine'),
+        custom: document.getElementById('customValue'),
+        cBase: document.getElementById('customBase'),
+        cScale: document.getElementById('customScale'),
+        cName: document.getElementById('customName'),
+        labelCustom: document.getElementById('labelCustom'),
+        btnReset: document.getElementById('btnReset')
+    };
+
+    // 格式化數字
+    const format = (n) => (n === "" ? "" : Math.round(n * 10000) / 10000);
+
+    // 核心計算函數
+    function convert(val, type) {
+        if (val === "" || isNaN(val)) {
+            clearAll();
+            return;
+        }
+
+        const num = parseFloat(val);
+        const base = parseFloat(dom.cBase.value) || 0;
+        const scale = parseFloat(dom.cScale.value) || 1;
+        
+        let c; // 以攝氏為轉換基準點
+
+        // 第一步：轉為攝氏
+        switch(type) {
+            case 'c': c = num; break;
+            case 'f': c = (num - 32) * 5/9; break;
+            case 'k': c = num - 273.15; break;
+            case 'r': c = (num - 491.67) * 5/9; break;
+            case 'custom': c = (num - base) / scale; break;
+        }
+
+        // 第二步：從攝氏轉為其他單位
+        if(type !== 'c') dom.c.value = format(c);
+        if(type !== 'f') dom.f.value = format(c * 9/5 + 32);
+        if(type !== 'k') dom.k.value = format(c + 273.15);
+        if(type !== 'r') dom.r.value = format((c + 273.15) * 9/5);
+        if(type !== 'custom') dom.custom.value = format(c * scale + base);
+    }
+
+    // 事件監聽
+    dom.c.oninput = (e) => convert(e.target.value, 'c');
+    dom.f.oninput = (e) => convert(e.target.value, 'f');
+    dom.k.oninput = (e) => convert(e.target.value, 'k');
+    dom.r.oninput = (e) => convert(e.target.value, 'r');
+    dom.custom.oninput = (e) => convert(e.target.value, 'custom');
+
+    // 名稱同步
+    dom.cName.oninput = (e) => {
+        dom.labelCustom.innerText = e.target.value + " 數值";
+    };
+
+    // 當自訂參數改變，重新計算自訂欄位
+    [dom.cBase, dom.cScale].forEach(el => {
+        el.oninput = () => {
+            if(dom.c.value !== "") convert(dom.c.value, 'c');
+        };
+    });
+
+    function clearAll() {
+        [dom.c, dom.f, dom.k, dom.r, dom.custom].forEach(i => i.value = "");
+    }
+
+    dom.btnReset.onclick = clearAll;
+</script>
+
+</body>
+</html>
